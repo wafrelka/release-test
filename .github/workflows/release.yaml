@@ -31,6 +31,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           cargo install cross
           cross build --release --target ${{ matrix.target }}
+          ls -R .
           cp "target/release/release-test" release-test-${{matrix.target }}
       - uses: "actions/upload-artifact@v3"
         with:

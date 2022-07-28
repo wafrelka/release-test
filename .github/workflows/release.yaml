@@ -33,7 +33,7 @@ jobs:
             ~/.cargo/git/
             target/
       - run: cargo install cross
-      - run:
+      - run: |
           cross build --release --target ${{ matrix.target }}
           cp "target/${{ matrix.target }}/release/release-test" release-test-${{ matrix.target }}
       - uses: "actions/upload-artifact@v3"

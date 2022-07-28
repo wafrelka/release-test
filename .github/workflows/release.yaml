@@ -27,7 +27,7 @@ jobs:
             ~/.cargo/git/db/
             target/
       - run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup target add ${{ matrix.target }}
           cargo build --release --target ${{ matrix.target }}
           cp target/release/toml2json toml2json-${{matrix.target }}

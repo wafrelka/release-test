@@ -31,7 +31,7 @@ jobs:
             ~/.cargo/registry/
             ~/.cargo/git/
             target/
-      - run: cargo install cross@0.2
+      - run: cargo install cross@^0.2
       - run: |
           cross build --release --target ${{ matrix.target }}
           BINS="$(cargo metadata --format-version=1 --no-deps | jq -r '.packages[].targets[].name')"

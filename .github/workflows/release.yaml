@@ -33,6 +33,7 @@ jobs:
           source "$HOME/.cargo/env"
           cargo install cross@0.2.4
       - run: |
+          source "$HOME/.cargo/env"
           cross build --release --target ${{ matrix.target }}
           cp "target/${{ matrix.target }}/release/release-test" release-test-${{ matrix.target }}
       - uses: "actions/upload-artifact@v3"

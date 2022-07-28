@@ -32,7 +32,8 @@ jobs:
       - run: cargo install cross@^0.2
       - run: |
           cross build --release --target ${{ matrix.target }}
-          BINS="$(cargo metadata --format-version=1 --no-deps | jq -r '.packages[].targets[].name')"
+          METADATA="$(cargo metadata --format-version=1 --no-deps)"
+          BINS="$(jq -r '.packages[].targets[].name' <<< "$METADATA")"
           for bin in ${BINS}; do
             mkdir -p "artifact"
             cp "target/${{ matrix.target }}/release/${bin}" "artifact/${bin}-${{ matrix.target }}"

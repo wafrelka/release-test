@@ -36,7 +36,9 @@ jobs:
           BINS="$(jq -r '.packages[].targets[].name' <<< "$METADATA")"
           for bin in ${BINS}; do
             mkdir -p "artifact"
-            (cd "target/${{ matrix.target }}/release/" && tar cz "${bin}") > "artifact/${bin}-${{ matrix.target }}.tar.gz"
+            dir="target/${{ matrix.target }}/release/"
+            name="${bin}-${{ matrix.target }}"
+            (cd "${dir}" && mv "${bin}" "${name}" && tar cz "${name}") > "artifact/${name}.tar.gz"
           done
       - uses: "actions/upload-artifact@v3"
         with:

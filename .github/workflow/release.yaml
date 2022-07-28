@@ -1,0 +1,15 @@
+name: "Release 'master' branch"
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  release:
+    runs-on: "ubuntu-22.04"
+    steps:
+      - uses: "actions/github-script@v6"
+        with:
+          script: |
+            const script = require('.github/script/release.js')
+            await script({github, context, core});

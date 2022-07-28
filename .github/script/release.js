@@ -2,7 +2,7 @@ module.exports = async ({github, context}) => {
 
     const repo = {owner: context.repo.owner, repo: context.repo.repo};
     const name = "latest";
-    const ref = `refs/tags/${name}`;
+    const ref = `tags/${name}`;
     const sha = context.sha;
 
     await github.rest.git.deleteRef({ref, ...repo}).catch((err) => console.warn(err));

@@ -21,7 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          sudo apt-get install -y --no-install-recommends podman
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
           echo "CARGO_VERSION=$(cargo -V | cut -d " " -f 2)" >> "$GITHUB_ENV"
       - uses: actions/cache@v3
@@ -35,10 +34,14 @@ jobs:
       - run: cargo install cross
       - run: |
           cross build --release --target ${{ matrix.target }}
-          cp "target/${{ matrix.target }}/release/release-test" release-test-${{ matrix.target }}
+          BINS="$(cargo metadata --format-version=1 --no-deps | jq -r '.packages[].targets[].name')"
+          for bin in ${BINS}; do
+            mkdir -p "artifact"
+            cp "target/${{ matrix.target }}/release/${bin}" "artifact/${bin}-${{ matrix.target }}"
+          done
       - uses: "actions/upload-artifact@v3"
         with:
-          path: "release-test-${{ matrix.target }}"
+          path: "artifact/*"
   release:
     needs: "build"
     runs-on: "ubuntu-22.04"

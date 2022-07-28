@@ -8,7 +8,7 @@ module.exports = async ({github, context}) => {
     await github.rest.git.deleteRef({ref: `tags/${name}`, ...repo}).catch(console.warn);
     await github.rest.git.createRef({ref: `refs/tags/${name}`, sha, ...repo});
 
-    const {data: releases} = await github.rest.repos.listReleases(repo);
+    /*const {data: releases} = await github.rest.repos.listReleases(repo);
     for(const release of releases) {
         if(release.tag_name === name) {
             await github.rest.repos.deleteRelease({
@@ -16,7 +16,7 @@ module.exports = async ({github, context}) => {
                 ...repo,
             });
         }
-    }
+    }*/
 
     await github.rest.repos.createRelease({
         tag_name: name,

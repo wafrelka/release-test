@@ -28,7 +28,7 @@ jobs:
             target/
       - run: |
           sudo apt-get install -y --no-install-recommends podman jq
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
           source "$HOME/.cargo/env"
           echo "$(which cargo)"
           cargo install cross@v0.2.4

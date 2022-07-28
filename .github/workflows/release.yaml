@@ -27,7 +27,7 @@ jobs:
             ~/.cargo/git/db/
             target/
       - run: |
-          apt-get install -y --no-install-recommends podman
+          sudo apt-get install -y --no-install-recommends podman
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           cargo install cross
           cross build --release --target ${{ matrix.target }}

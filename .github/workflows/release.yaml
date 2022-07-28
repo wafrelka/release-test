@@ -27,9 +27,7 @@ jobs:
         with:
           key: cargo-${{ env.CARGO_VERSION }}-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
           path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/
-            ~/.cargo/git/
+            ~/.cargo/
             target/
       - run: cargo install cross@^0.2
       - run: |

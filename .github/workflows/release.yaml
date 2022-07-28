@@ -29,15 +29,15 @@ jobs:
       - run: |
           sudo apt-get install -y --no-install-recommends podman jq
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+      - run: |
           source "$HOME/.cargo/env"
-          echo "$(which cargo)"
-          cargo install cross@v0.2.4
+          cargo install cross@0.2.4
+      - run: |
           cross build --release --target ${{ matrix.target }}
-          ls -R .
-          cp "target/${{matrix.target}}/release/release-test" release-test-${{matrix.target }}
+          cp "target/${{ matrix.target }}/release/release-test" release-test-${{ matrix.target }}
       - uses: "actions/upload-artifact@v3"
         with:
-          path: "release-test-${{matrix.target }}"
+          path: "release-test-${{ matrix.target }}"
   release:
     needs: "build"
     runs-on: "ubuntu-22.04"

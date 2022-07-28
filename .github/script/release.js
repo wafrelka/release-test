@@ -1,8 +1,10 @@
+const fs = require("fs");
+const path = require("path");
+
 module.exports = async ({github, context}) => {
 
     const repo = {owner: context.repo.owner, repo: context.repo.repo};
     const name = "latest";
-    const ref = `tags/${name}`;
     const sha = context.sha;
 
     await github.rest.git.deleteRef({ref: `tags/${name}`, ...repo}).catch(console.warn);
@@ -18,10 +20,20 @@ module.exports = async ({github, context}) => {
         }
     }
 
-    await github.rest.repos.createRelease({
+    const {data: release} = await github.rest.repos.createRelease({
         tag_name: name,
         name: name,
         prerelease: true,
         ...repo,
     });
+
+    for await(const fname of fs.promises.readdir("artifact")) {
+        const fpath = path.join("artifact", fname);
+        github.rest.repos.uploadReleaseAsset({
+            name: fname,
+            data: await fs.promises.readFile(fpath),
+            release_id: release.id,
+            ...repo,
+          });
+    }
 };

@@ -17,7 +17,7 @@ module.exports = async ({github, context}) => {
     }
 
     await github.rest.repos.createRelease({
-        tag_name: context.ref,
+        tag_name: name,
         name: name,
         prerelease: true,
         ...repo,

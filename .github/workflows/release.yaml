@@ -1,5 +1,8 @@
 name: "Release 'master' branch"
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: ["master"]
@@ -15,21 +18,23 @@ jobs:
           # - arm-unknown-linux-gnueabihf
           - aarch64-unknown-linux-gnu
           - x86_64-unknown-linux-gnu
+    env:
+      CROSS_VERSION: "0.2.4"
     steps:
+      - run: |
+          sudo apt-get install -y --no-install-recommends podman jq
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
-          key: ${{ runner.os }}-cargo-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ matrix.target }}-${{ env.CROSS_VERSION }}-${{ hashFiles('**/Cargo.lock') }}
           path: |
             ~/.cargo/bin/
             ~/.cargo/registry/
             ~/.cargo/git/
             target/
       - run: |
-          sudo apt-get install -y --no-install-recommends podman jq
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-      - run: |
-          cargo install cross@0.2.4
+          cargo install cross@${{ env.CROSS_VERSION }}
       - run: |
           cross build --release --target ${{ matrix.target }}
           cp "target/${{ matrix.target }}/release/release-test" release-test-${{ matrix.target }}

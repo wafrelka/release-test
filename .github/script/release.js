@@ -6,7 +6,6 @@ module.exports = async ({github, context}) => {
     const sha = context.sha;
 
     await github.rest.git.deleteRef({ref, ...repo}).catch(() => undefined);
-
     await github.rest.git.createRef({ref, sha, ...repo});
 
     const {data: releases} = await github.rest.repos.listReleases(repo);

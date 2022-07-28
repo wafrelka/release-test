@@ -27,7 +27,8 @@ module.exports = async ({github, context}) => {
         ...repo,
     });
 
-    for await(const fname of fs.promises.readdir("artifact")) {
+    const fnames = await fs.promises.readdir("artifact");
+    for(const fname of fnames) {
         const fpath = path.join("artifact", fname);
         github.rest.repos.uploadReleaseAsset({
             name: fname,

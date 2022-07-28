@@ -10,7 +10,7 @@ module.exports = async ({github, context}) => {
     const ref_param = {ref: `refs/tags/${name}`, sha, ...repo};
 
     await github.rest.git.updateRef({force: true, ...ref_param})
-        .catch(() => github.rest.git.createRef(ref_param));
+        .catch((err) => {log.warn(err); github.rest.git.createRef(ref_param)});
 
     const {data: releases} = await github.rest.repos.listReleases(repo);
     for(const release of releases) {

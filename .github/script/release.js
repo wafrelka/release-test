@@ -4,7 +4,7 @@ module.exports = async ({github, context}) => {
         owner: context.repo.owner,
         repo: context.repo.repo,
     };
-    const name = context.ref;
+    const name = context.ref.split("/").slice(2).join("/");
 
     const {data: releases} = await github.rest.repos.listReleases(repo);
     for(const release of releases) {

@@ -32,7 +32,7 @@ jobs:
           cargo install cross
           cross build --release --target ${{ matrix.target }}
           ls -R .
-          cp "target/release/release-test" release-test-${{matrix.target }}
+          cp "target/${{matrix.target}}/release/release-test" release-test-${{matrix.target }}
       - uses: "actions/upload-artifact@v3"
         with:
           path: "release-test-${{matrix.target }}"

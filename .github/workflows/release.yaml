@@ -27,14 +27,14 @@ jobs:
             ~/.cargo/git/db/
             target/
       - run: |
-          sudo apt-get install -y --no-install-recommends podman
+          sudo apt-get install -y --no-install-recommends podman jq
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           cargo install cross
           cross build --release --target ${{ matrix.target }}
-          cp target/release/toml2json toml2json-${{matrix.target }}
+          cp "target/release/release-test" release-test-${{matrix.target }}
       - uses: "actions/upload-artifact@v3"
         with:
-          path: "toml2json"
+          path: "release-test-${{matrix.target }}"
   release:
     needs: "build"
     runs-on: "ubuntu-22.04"
